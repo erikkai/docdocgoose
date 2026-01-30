@@ -1,0 +1,35 @@
+name: Link Checker
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "0 0 * * 1" # Runs every Monday
+  workflow_dispatch: # Allows you to run it manually for testing
+
+jobs:
+  linkChecker:
+    runs-on: ubuntu-latest
+    # Added permissions so the Action has authority to create the Issue
+    permissions:
+      issues: write
+      contents: read
+    
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Lychee Check
+        uses: lycheeverse/lychee-action@v2
+        id: lychee
+        with:
+          args: --verbose --no-progress --exclude ".*#common-build-errors" --include-fragments '.'
+          # Setting to 'true' ensures the Badge turns RED on failure
+          fail: true 
+
+      - name: Create Issue if links are broken
+        # 'failure()' is the "keep going" command that handles the fail:true
+        if: failure() && steps.lychee.outputs.exit_code != 0
+        uses: peter-evans/create-issue-from-file@v5
+        with:
+          title: "Broken Links Found"
+          content-filepath: ./lychee/out.md
+          labels: documentation, automated-report
