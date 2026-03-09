@@ -1,0 +1,26 @@
+{
+  "alert_mode": "single_issue",
+  "docrot": {
+    "priorities_days": {
+      "P1": 7,
+      "P2": 180
+    },
+    "documents": {
+      "REPLACE_WITH_DOC_PATH.md": {
+        "priority": "P1",
+        "exec": [
+          {
+            "artifact": "REPLACE_WITH_SCRIPT.py",
+            "runner": "python",
+            "image": "python:3.11-slim"
+          },
+          {
+            "artifact": "REPLACE_WITH_SCRIPT.sh",
+            "runner": "bash",
+            "image": "ubuntu:22.04"
+          }
+        ]
+      }
+    }
+  }
+}
