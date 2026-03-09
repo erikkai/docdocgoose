@@ -47,8 +47,17 @@ def init():
     os.makedirs(".docdocgoose/exec", exist_ok=True)
     
     config = {
-        "alert_mode": "single_issue"
+        "alert_mode": "single_issue",
+        "docrot": {
+        "priorities_days": {
+            "P1": 7,
+            "P2": 90,
+            "P3": 180
+        },
+        "documents": {}
+        }
     }
+
 
     with open(".docdocgoose/config.json", "w") as f: 
         json.dump(config, f, indent=2)
