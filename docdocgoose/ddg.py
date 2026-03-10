@@ -4,7 +4,9 @@ import shutil
 import importlib.resources as resources
 import json
 import subprocess
-import time
+import requests
+
+from datetime import datetime, timezone
 
 # HELPER FUNCTIONS 
 
@@ -40,6 +42,8 @@ def get_repo_info():
     repo_part = url.split("github.com")[-1]
 
     repo_part = repo_part.replace(".git", "")
+
+    repo_part = repo_part.lstrip(":/")
 
     owner, repo = repo_part.split("/")
 
@@ -90,7 +94,7 @@ def init():
     with open(".docdocgoose/config.json", "w") as f: 
         json.dump(config, f, indent=2)
 
-    click.echo("🪿 DocDocGoose directories are ready!")
+    click.echo("🪿 DocDocGoose directories and basic config are ready!")
 
     destination = ".github/workflows/docdocgoose_link_checker.yml"
     if os.path.exists(destination):
@@ -101,6 +105,7 @@ def init():
         with open(destination, "wb") as dst:
             shutil.copyfileobj(src, dst) 
             click.echo("Link checker successfully installed.")
+    click.echo("You're ready to go!")
 
 @cli.command()
 def scan():
@@ -112,19 +117,59 @@ def scan():
     
     click.echo("🪿 Scanning for documentation health...")
 
-    with open(".docdocgoose/config.json", 'r') as file:
-        config = json.load(file)
-        documents = config["docrot"]["documents"]
-        if not documents:
-            click.echo("No documents configured.")
-        else: 
-            owner, repo = get_repo_info()
-            print(owner)
-            print(repo)
-            for item in documents:
-                print(item)    
+    documents = config["docrot"]["documents"]
+    if not documents:
+        click.echo("No documents configured.")
+    else: 
+        owner, repo = get_repo_info()
+        log_list = []
+        for item in documents:
+            url = f"https://api.github.com/repos/{owner}/{repo}/commits"   
+            params = {
+                "path": item,
+                "per_page": 1
+            }
+            priority = documents[item]["priority"]
+            days = config["docrot"]["priorities_days"][priority]
+            response = requests.get(url, params=params)
+            if response.status_code == 200:
+                commits = response.json()
+                doc_url = f"https://github.com/{owner}/{repo}/blob/main/{item}"
+                if commits:
+                    last_modified = commits[0]["commit"]["committer"]["date"]
+                    convert_last_modified = datetime.fromisoformat(last_modified)
+                    now = datetime.now(timezone.utc)
+                    is_old_enough = (now - convert_last_modified).days >= days
+                    if is_old_enough:
+                        due = {
+                            "document": item, 
+                            "url": doc_url,
+                            "priority": priority,
+                            "status": "due",
+                            "last_modified": last_modified
+                        }
+                        log_list.append(due)
 
-        
+                    else: 
+                        fresh = {
+                            "document": item,
+                            "url": doc_url,
+                            "priority": priority,
+                            "status": "fresh",
+                            "last_modified": last_modified
+                        }
+                        log_list.append(fresh)
+                        
+                else:
+                    click.echo("HONK! 🪿 File not found or has no commit history.")
+            elif response.status_code == 403: 
+                    click.echo("HONK! 🪿 Rate limit exceeded. Try again in an hour or use a token.")
+            else:
+                click.echo(f"Error: {response.status_code}")
+        click.echo("Writing log.")
+        with open(".docdocgoose/logs/scan_log.json", "w") as log:
+            json.dump(log_list, log, indent=2)
+
     click.echo("Scan complete.")
 
 

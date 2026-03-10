@@ -3,7 +3,8 @@
   "docrot": {
     "priorities_days": {
       "P1": 7,
-      "P2": 180
+      "P2": 90,
+      "P3": 180
     },
     "documents": {
       "REPLACE_WITH_DOC_PATH.md": {
