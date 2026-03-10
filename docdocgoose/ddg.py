@@ -3,6 +3,7 @@ import os
 import shutil
 import importlib.resources as resources
 import json
+import subprocess
 import time
 
 # HELPER FUNCTIONS 
@@ -23,6 +24,27 @@ def save_config(config_data):
     with open(config_path, "w") as f:
         json.dump(config_data, f, indent=2)
 
+# Retrieve the repo info for scan
+def get_repo_info():
+    result = subprocess.run(
+        ["git", "remote", "get-url", "origin"],
+        capture_output=True,
+        text=True
+    )
+
+    url = result.stdout.strip()
+
+    if "github.com" not in url:
+        raise Exception("This does not appear to be a GitHub repository.")
+    
+    repo_part = url.split("github.com")[-1]
+
+    repo_part = repo_part.replace(".git", "")
+
+    owner, repo = repo_part.split("/")
+
+    return owner, repo
+
 # CLI COMMANDS AND IMPLEMENTATION
 # --- Group 1: The Main Goose ---
 @click.group()
@@ -41,6 +63,13 @@ def init():
         click.echo("HONK! 🪿 Please run this command from the root of your GitHub repository.")
         return
     
+    if os.path.isdir(".docdocgoose/"):
+        if click.confirm("HONK! 🪿 Docdocgoose appears to already be initialized. Reinitialize and overwrite configuration? (IT OVERWRITES EVERYTHING!)"):
+            click.echo('Continuing...')
+        else: 
+            click.echo('Aborted.')
+            return
+
 # Check for file structure and add it if it's not there, then install the link checker. 
     os.makedirs(".github/workflows", exist_ok=True)
     os.makedirs(".docdocgoose/logs", exist_ok=True)
@@ -57,7 +86,6 @@ def init():
         "documents": {}
         }
     }
-
 
     with open(".docdocgoose/config.json", "w") as f: 
         json.dump(config, f, indent=2)
@@ -84,7 +112,19 @@ def scan():
     
     click.echo("🪿 Scanning for documentation health...")
 
+    with open(".docdocgoose/config.json", 'r') as file:
+        config = json.load(file)
+        documents = config["docrot"]["documents"]
+        if not documents:
+            click.echo("No documents configured.")
+        else: 
+            owner, repo = get_repo_info()
+            print(owner)
+            print(repo)
+            for item in documents:
+                print(item)    
 
+        
     click.echo("Scan complete.")
 
 

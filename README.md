@@ -2,6 +2,12 @@
 
 > **NOTE:** MVP work is still in progress. 
 
+## Try it Out 
+
+If you want to try Doc Doc Goose, a sample repository is available: [docdocgoose_test_repo](https://github.com/erikkai/docdocgoose_test_repo/) 
+
+The sample repository contains setup instructions and example files so you can experiment with Doc Doc Goose without modifying your own project.
+
 ## The Problem  
 
 Technical documentation easily becomes inaccurate over time. Commands change, dependencies update, links break, formatting styles evolve, and instructions stop working. As documentation grows, the content can also become disorganized, making it difficult for users to find what they need. 
