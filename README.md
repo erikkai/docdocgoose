@@ -59,8 +59,9 @@ The current CLI MVP focuses on a few core capabilities:
 * Generate structured scan logs showing which documentation may need review
 
 ## The Solution (Planned Capabilities)
+Future versions of Doc Doc Goose will expand documentation monitoring to automatically detect additional types of issues.
 
-Doc Doc Goose automatically checks whether:
+Doc Doc Goose will check whether:
 * Your code samples are still functional
 * Installation instructions are still accurate
 * Content has been reviewed recently and is due for an update
