@@ -12,7 +12,7 @@ Link checker successfully installed.
 $ ddg scan
 🪿 Scanning for documentation health...
 doc_samples/doc_1.md    fresh
-doc_samples/doc_2.md.   due
+doc_samples/doc_2.md   due
 Scan complete.
 Log written to .docdocgoose/logs/scan_log.json
 ```
@@ -48,9 +48,17 @@ The sample repository contains setup instructions and example files so you can e
 
 Technical documentation easily becomes inaccurate over time. Commands change, dependencies update, links break, formatting styles evolve, and instructions stop working. As documentation grows, the content can also become disorganized, making it difficult for users to find what they need. 
 
-## The Solution
+## The Solution (Current MVP)
 
-Doc Doc Goose solves these problems by monitoring documentation and detecting when information may have become outdated or invalid. 
+Doc Doc Goose addresses documentation rot by monitoring documentation and detecting when information may have become outdated or invalid.
+
+The current CLI MVP focuses on a few core capabilities: 
+
+* Detect when documentation may be stale based on configurable review priorities
+* Check documentation for broken links
+* Generate structured scan logs showing which documentation may need review
+
+## The Solution (Planned Capabilities)
 
 Doc Doc Goose automatically checks whether:
 * Your code samples are still functional
