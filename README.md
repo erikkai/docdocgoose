@@ -73,11 +73,3 @@ Doc Doc Goose also includes additional capabilities:
 * A dashboard for monitoring documentation across multiple repositories
 * A tool for creating a style linter using AI
 * The ability to add your content to a retrieval-augmented generation (RAG) system that fetches information from your documentation to provide tailored responses to users
-
-## Project Status
-
-This repo contains the CLI MVP (Minimum Viable Product). Doc Doc Goose is currently an early release focused on several core documentation monitoring features. This repository contains the first CLI tool which allows you to: 
-
-* Automatically detect documentation rot at priority-based intervals
-* Check for bad links in documentation 
-* Run documented commands or code samples inside a selected Docker container to verify they execute successfully
