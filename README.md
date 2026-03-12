@@ -2,6 +2,42 @@
 
 > **NOTE:** MVP work is still in progress. 
 
+## Quick Demo 
+
+```bash
+$ ddg init 
+🪿 DocDocGoose directories are ready!
+Link checker successfully installed.
+
+$ ddg scan
+🪿 Scanning for documentation health...
+doc_samples/doc_1.md    fresh
+doc_samples/doc_2.md.   due
+Scan complete.
+Log written to .docdocgoose/logs/scan_log.json
+```
+
+Sample output:
+
+```json
+[
+  {
+    "document": "doc_samples/doc_1.md",
+    "url": "https://github.com/erikkai/docdocgoose_test_repo/blob/main/doc_samples/doc_1.md",
+    "priority": "P1",
+    "status": "fresh",
+    "last_modified": "2026-03-10T21:34:55Z"
+  },
+  {
+    "document": "doc_samples/doc_2.md",
+    "url": "https://github.com/erikkai/docdocgoose_test_repo/blob/main/doc_samples/doc_2.md",
+    "priority": "P1",
+    "status": "due",
+    "last_modified": "2026-02-20T10:12:11Z"
+  }
+]
+```
+
 ## Try it Out 
 
 If you want to try Doc Doc Goose, a sample repository is available: [docdocgoose_test_repo](https://github.com/erikkai/docdocgoose_test_repo/) 
