@@ -70,7 +70,7 @@ Doc Doc Goose will check whether:
 * Documentation is properly formatted and follows selected style and grammar rules
 * Pages are popular with users or not by combining documentation-specific metrics and options for users to provide feedback per page 
 
-Doc Doc Goose also includes additional capabilities:
+Doc Doc Goose will also include the following additional capabilities:
 * A dashboard for monitoring documentation across multiple repositories
 * A tool for creating a style linter using AI
 * The ability to add your content to a retrieval-augmented generation (RAG) system that fetches information from your documentation to provide tailored responses to users
