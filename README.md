@@ -1,6 +1,6 @@
-# Doc Doc Goose - Documentation Monitoring and Rot Detection
+# Doc Doc Goose - Documentation Drift Detection and Verification
 
-> **NOTE:** MVP work is still in progress. 
+> **NOTE:** MVP work is still in progress. The goal of Doc Doc Goose is to verify that documentation instructions actually work by executing code samples and commands in controlled environments, while mapping relationships between documentation files and associated code. When code changes affect a document, engineers can be alerted immediately that the documentation may require review.
 
 ## Quick Demo 
 
@@ -61,16 +61,13 @@ The current CLI MVP focuses on a few core capabilities:
 ## The Solution (Planned Capabilities)
 Future versions of Doc Doc Goose will expand documentation monitoring to automatically detect additional types of issues.
 
-Doc Doc Goose will check whether:
-* Your code samples are still functional
-* Installation instructions are still accurate
-* Content has been reviewed recently and is due for an update
-* Documentation contains broken links 
-* Changes to code or systems may have affected your documentation 
-* Documentation is properly formatted and follows selected style and grammar rules
-* Pages are popular with users or not by combining documentation-specific metrics and options for users to provide feedback per page 
+Doc Doc Goose will:
+* Execute code samples from your documentation in controlled environments to verify they still run
+* Run installation commands and bash scripts to confirm setup instructions still work
+* Detect documentation drift by mapping relationships between documentation, code, and key project files
+* Validate documentation formatting and style rules using configurable linting tools such as Vale
+* Surface documentation health signals, including page usage metrics and optional user feedback per page
 
 Doc Doc Goose will also include the following additional capabilities:
 * A dashboard for monitoring documentation across multiple repositories
-* A tool for creating a style linter using AI
 * The ability to add your content to a retrieval-augmented generation (RAG) system that fetches information from your documentation to provide tailored responses to users
